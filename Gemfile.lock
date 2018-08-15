@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    solve_pb (0.1.2)
+    solve_pb (0.1.3)
 
 GEM
   remote: https://rubygems.org/
@@ -36,4 +36,4 @@ DEPENDENCIES
   solve_pb!
 
 BUNDLED WITH
-   1.16.2
+   1.16.3

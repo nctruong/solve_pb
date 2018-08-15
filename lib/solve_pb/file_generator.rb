@@ -3,20 +3,24 @@ module SolvePb
     attr_reader :problem, :language
 
     def generate(args)
-      @problem = ProblemParser.new.parse(args[:url])
+      @problem = ProblemParser.new(args[:url]).parse
       @language = args[:lang]
       if problem
         puts "Preparing workspace"
-        prepare_directory
-        prepare_readme
-        prepare_main_program
-        prepare_sample_input
-        prepare_sample_output
-        download_pb_statement
+        setup_workspace
       end
     end
 
     private
+
+    def setup_workspace
+      prepare_directory
+      prepare_readme
+      prepare_main_program
+      prepare_sample_input
+      prepare_sample_output
+      download_pb_statement
+    end
 
     def prepare_directory
       puts "\tcreate #{File.join(problem.name, '')}"
@@ -36,18 +40,12 @@ module SolvePb
 
     def prepare_sample_input
       path = File.join(problem.name, "sample.input")
-      unless file_exists?(path)
-        open(path, 'w') { |f| f.write(problem.sample_input) }
-        puts "\tcreate #{path}"
-      end
+      create_file_path(problem.sample_input, path)
     end
 
     def prepare_sample_output
       path = File.join(problem.name, "sample.output")
-      unless file_exists?(path)
-        open(path, 'w') { |f| f.write(problem.sample_output) }
-        puts "\tcreate #{path}"
-      end
+      create_file_path(problem.sample_output, path)
     end
 
     def get_main_file_name
@@ -57,12 +55,7 @@ module SolvePb
 
     def prepare_readme
       path = File.join(problem.name, "readme.md")
-      unless file_exists?(path)
-        open(path, 'w') do |f|
-          f.write("[#{problem.name.capitalize} url](#{problem.url})")
-        end
-        puts "\tcreate #{path}"
-      end
+      create_file_path("[#{problem.name.capitalize} url](#{problem.url})", path)
     end
 
     def download_pb_statement
@@ -77,6 +70,13 @@ module SolvePb
     def file_exists?(path)
       raise "\tIgnore #{path}. It already exists." if File.exist?(path)
       false
+    end
+
+    def create_file_path(content, to_path)
+      unless file_exists?(to_path)
+        open(to_path, 'w') { |f| f.write(content) }
+        puts "\tcreate #{to_path}"
+      end
     end
   end
 end

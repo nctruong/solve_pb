@@ -1,13 +1,12 @@
 module SolvePb
   class ProblemParser
-    def parse(url)
-      uri = URI(get_problem_info_url(url))
-      problem_info = nil
-      Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
-        request = Net::HTTP::Get.new uri
-        response = http.request request
-        problem_info = response.body
-      end
+    attr_reader :url
+
+    def initialize(url)
+      @url = url
+    end
+
+    def parse
       @problem_json = JSON.parse(problem_info)
       Problem.new(
         url,
@@ -17,6 +16,16 @@ module SolvePb
     end
 
     private
+
+    def problem_info
+      uri = URI(get_problem_info_url(url))
+      Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+        request = Net::HTTP::Get.new uri
+        response = http.request request
+        return response.body
+      end
+    end
+
     def get_problem_name_from_json
       return @problem_json['model']['slug']
     end
@@ -24,25 +33,19 @@ module SolvePb
     def get_problem_sample_input_from_json
       result = doc.css("div.challenge_sample_input_body code").text
       if result.strip.size == 0
-        result = doc.css("div.challenge_sample_input_body p").text
-      end
-      if result.strip.size == 0
         result = doc.xpath('//strong[contains(text(), "Sample Input")]').first
           .parent.next_element.text
       end
-      return result
+      result
     end
 
     def get_problem_sample_output_from_json
       result = doc.css("div.challenge_sample_output_body code").text
       if result.strip.size == 0
-        result = doc.css("div.challenge_sample_output_body p").text
-      end
-      if result.strip.size == 0
         result = doc.xpath('//strong[contains(text(), "Sample Output")]').first
           .parent.next_element.text
       end
-      return result
+      result
     end
 
     def get_problem_slug(url)
@@ -55,11 +58,7 @@ module SolvePb
     end
 
     def doc
-      @doc ||= Nokogiri::HTML(
-        @problem_json['model']['body_html'].force_encoding('UTF-8').tap do |html|
-          # puts html
-        end
-      )
+      @doc ||= Nokogiri::HTML(@problem_json['model']['body_html'].force_encoding('UTF-8'))
     end
   end
 end

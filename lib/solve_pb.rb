@@ -13,17 +13,17 @@ require "solve_pb/file_generator"
 
 module SolvePb
   module ClassMethods
+    def main
+      args = SolvePb::ArgsInspector.new.parse
+      args.nil? ? 'Lack of URL' : SolvePb::FileGenerator.new.generate(args)
+    end
+    
     def root
       File.dirname __dir__
     end
 
     def test
       File.join root, "test"
-    end
-
-    def main
-      args = SolvePb::ArgsInspector.new.parse
-      args.nil? ? 'Lack of URL' : SolvePb::FileGenerator.new.generate(args)
     end
   end
   extend ClassMethods
