@@ -1,4 +1,3 @@
-require "byebug"
 require "solve_pb/version"
 require "solve_pb/version"
 require "solve_pb/problem"
