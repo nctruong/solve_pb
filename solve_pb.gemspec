@@ -6,12 +6,12 @@ require "solve_pb/version"
 Gem::Specification.new do |spec|
   spec.name          = "solve_pb"
   spec.version       = SolvePb::VERSION
-  spec.authors       = ["will"]
+  spec.authors       = ["Will Nguyen"]
   spec.email         = ["nctruong861990@gmail.com"]
 
   spec.summary       = %q{Prepare source to solve problem}
   spec.description   = %q{Prepare source to solve problem}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/nctruong/solve_pb"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
