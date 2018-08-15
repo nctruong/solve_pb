@@ -4,10 +4,10 @@ module SolvePb
     attr_accessor :url, :name, :sample_input, :sample_output
 
     def initialize(url, name, sample_input, sample_output)
-      self.url = url
-      self.name = name
-      self.sample_input = sample_input
-      self.sample_output = sample_output
+      @url = url
+      @name = name
+      @sample_input = sample_input
+      @sample_output = sample_output
     end
 
     def download_pdf

@@ -1,5 +1,5 @@
 module SolvePb
-  class Commandline
+  class ArgsInspector
     def parse
       args = [:url, :lang]
       @args = {}
@@ -11,8 +11,8 @@ module SolvePb
         @args[:lang] = "ruby"
       end
       if @args[:url].nil?
-        puts "Please specify at least the problem's URL. Example:"
-        puts "$ SolvePb https://www.hackerrank.com/challenges/acm-icpc-team"
+        puts "Please input url. Example:"
+        puts "$ bundle exec solve https://www.hackerrank.com/challenges/bomber-man"
         return nil
       end
       if @args.size > 2

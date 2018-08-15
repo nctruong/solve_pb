@@ -1,7 +1,3 @@
-require 'fileutils'
-require 'open-uri'
-require 'solve_pb/problem_parser'
-
 module SolvePb
   class FileGenerator
     attr_reader :problem, :language
@@ -11,69 +7,55 @@ module SolvePb
       @language = args[:lang]
       if problem
         puts "Preparing workspace"
-        create_directory
-        create_readme
-        create_main_program
-        create_sample_input
-        create_sample_output
+        prepare_directory
+        prepare_readme
+        prepare_main_program
+        prepare_sample_input
+        prepare_sample_output
         download_pb_statement
-        # create_runsh(problem, language)
-      else
-        puts "Couldn't fetch problem information. Please raise an issue on https://github.com/nctruong/solve_pb"
       end
     end
 
     private
 
-    def create_directory
+    def prepare_directory
       puts "\tcreate #{File.join(problem.name, '')}"
       Dir.mkdir(problem.name)
     end
 
-    def create_main_program
+    def prepare_main_program
       main_file_name = get_main_file_name
-      main_file_path = File.join(
-        SolvePb.root, "template",
-        language, main_file_name)
+      main_file_path = File.join(SolvePb.root, "template", language, main_file_name)
       des_path = File.join(problem.name, main_file_name)
       puts "\tcreate #{des_path}"
       FileUtils.cp(main_file_path, des_path)
+    rescue
+      puts language
+      puts main_file_name
     end
 
-    def create_sample_input
+    def prepare_sample_input
       path = File.join(problem.name, "sample.input")
       unless file_exists?(path)
-        open(path, 'w') do |f|
-          f.write(problem.sample_input)
-        end
+        open(path, 'w') { |f| f.write(problem.sample_input) }
         puts "\tcreate #{path}"
       end
     end
 
-    def create_sample_output
+    def prepare_sample_output
       path = File.join(problem.name, "sample.output")
       unless file_exists?(path)
-        open(path, 'w') do |f|
-          f.write(problem.sample_output)
-        end
+        open(path, 'w') { |f| f.write(problem.sample_output) }
         puts "\tcreate #{path}"
       end
-    end
-
-    def create_runsh
-      runsh_path = File.join(
-        SolvePb.root, "template", language, "compile.sh")
-      des_path = File.join(problem.name, "run.sh")
-      puts "\tcreate #{des_path}"
-      FileUtils.cp(runsh_path, des_path)
-      FileUtils.chmod("a+x", des_path)
     end
 
     def get_main_file_name
       return "main.rb" if language == "ruby"
+      return "main.cpp" if language == "c++"
     end
 
-    def create_readme
+    def prepare_readme
       path = File.join(problem.name, "readme.md")
       unless file_exists?(path)
         open(path, 'w') do |f|
@@ -93,7 +75,7 @@ module SolvePb
     end
 
     def file_exists?(path)
-      raise "\tignore #{path}. It already exists." if File.exist?(path)
+      raise "\tIgnore #{path}. It already exists." if File.exist?(path)
       false
     end
   end

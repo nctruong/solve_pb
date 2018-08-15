@@ -1,25 +1,30 @@
-require "solve_pb/version"
+require 'fileutils'
+require 'open-uri'
+require 'net/http'
+require 'json'
+require 'uri'
+require 'nokogiri'
+
 require "solve_pb/version"
 require "solve_pb/problem"
 require "solve_pb/problem_parser"
-require "solve_pb/command_line"
+require "solve_pb/args_inspector"
 require "solve_pb/file_generator"
 
 module SolvePb
-  def self.root
-    File.dirname __dir__
-  end
+  module ClassMethods
+    def root
+      File.dirname __dir__
+    end
 
-  def self.test
-    File.join root, "test"
-  end
+    def test
+      File.join root, "test"
+    end
 
-  def self.main
-    args = SolvePb::Commandline.new.parse
-    if args
-      SolvePb::FileGenerator.new.generate(args)
-    else
-      puts "Doing nothing. Abort!"
+    def main
+      args = SolvePb::ArgsInspector.new.parse
+      args.nil? ? 'Lack of URL' : SolvePb::FileGenerator.new.generate(args)
     end
   end
+  extend ClassMethods
 end
