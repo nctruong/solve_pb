@@ -1,14 +1,13 @@
 # SolvePb
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/solve_pb`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Supporting to create folders and files needed for solving problem on hackerrank.com
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'nokogiri', '~> 1.6.7'
 gem 'solve_pb'
 ```
 
@@ -22,7 +21,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+bundle exec rake solve [hackerrank problem url]
+```
+
+We currently support Ruby (default) and C++.
 
 ## Development
 
