@@ -22,7 +22,13 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-bundle exec solve [hackerrank problem url]
+bundle exec solve [hackerrank problem url] ["ruby", "c++"]
+```
+```ruby
+bundle exec solve https://www.hackerrank.com/challenges/bomber-man ruby
+```
+```ruby
+bundle exec solve https://www.hackerrank.com/challenges/bomber-man c++
 ```
 
 We currently support Ruby (default).
