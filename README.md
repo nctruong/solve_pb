@@ -22,10 +22,10 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-bundle exec rake solve [hackerrank problem url]
+bundle exec solve [hackerrank problem url]
 ```
 
-We currently support Ruby (default) and C++.
+We currently support Ruby (default).
 
 ## Development
 
